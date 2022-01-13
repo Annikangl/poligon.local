@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    @php(/** @var \App\Models\BlogCategory $item */)
+    @php
+        /** @var \App\Models\BlogCategory $item */
     @endphp
 
     <form action="{{ route('blog.admin.categories.update', $item->id) }}" method="post">
@@ -10,7 +11,9 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    @php(/** @var \Illuminate\Support\ViewErrorBag $errors */) @endphp
+                    @php
+                        /** @var \Illuminate\Support\ViewErrorBag $errors */
+                    @endphp
                     @if($errors->any())
                         <div class="row justify-content-center">
                             <div class="col-md-11">
