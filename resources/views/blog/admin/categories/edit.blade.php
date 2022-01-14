@@ -5,41 +5,46 @@
         /** @var \App\Models\BlogCategory $item */
     @endphp
 
-    <form action="{{ route('blog.admin.categories.update', $item->id) }}" method="post">
-        @method('PATCH')
-        @csrf
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    @php
-                        /** @var \Illuminate\Support\ViewErrorBag $errors */
-                    @endphp
-                    @if($errors->any())
-                        <div class="row justify-content-center">
-                            <div class="col-md-11">
-                                <div class="alert alert-danger" role="alert">
-                                    {{ $errors->first() }}
+    @if($item->exists)
+        <form action="{{ route('blog.admin.categories.update', $item->id) }}" method="post">
+            @method('PATCH')
+    @else
+        <form action="{{ route('blog.admin.categories.store') }}" method="post">
+    @endif
+         @csrf
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        @php
+                            /** @var \Illuminate\Support\ViewErrorBag $errors */
+                        @endphp
+                        @if($errors->any())
+                            <div class="row justify-content-center">
+                                <div class="col-md-11">
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $errors->first() }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endif
+                        @endif
 
-                    @if(session('success'))
-                        <div class="row justify-content-center">
-                            <div class="col-md-11">
-                                <div class="alert alert-success" role="alert">
-                                    {{ session()->get('success') }}
+                        @if(session('success'))
+                            <div class="row justify-content-center">
+                                <div class="col-md-11">
+                                    <div class="alert alert-success" role="alert">
+                                        {{ session()->get('success') }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endif
+                        @endif
 
-                    @include('blog.admin.categories.includes.item_edit_main_col')
-                </div>
-                <div class="col-md-3">
-                    @include('blog.admin.categories.includes.item_edit_add_col')
+                        @include('blog.admin.categories.includes.item_edit_main_col')
+                    </div>
+                    <div class="col-md-3">
+                        @include('blog.admin.categories.includes.item_edit_add_col')
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+
 @endsection
