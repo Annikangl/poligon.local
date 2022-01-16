@@ -12,4 +12,6 @@ class BlogCategory extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['title','parent_id','slug','description'];
+
+
 }

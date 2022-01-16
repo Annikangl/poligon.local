@@ -3,6 +3,7 @@
 
 namespace App\Http\Repositories;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 
 /**
@@ -16,8 +17,11 @@ use Illuminate\Foundation\Application;
 abstract class CoreRepository
 {
 
-    protected $model;
+    protected Model $model;
 
+    /*
+     * Создает объект модели (имя класса потомка, который реализует абстрактный метод
+     */
     public function __construct()
     {
         $this->model = app($this->getModelClass());
@@ -25,7 +29,7 @@ abstract class CoreRepository
 
     abstract protected function getModelClass();
 
-    protected function startCondition() : Application|null
+    protected function startCondition()
     {
         return clone $this->model;
     }

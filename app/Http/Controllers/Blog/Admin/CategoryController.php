@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
+use App\Http\Repositories\BlogCategoryRepository;
 use App\Http\Requests\BlogCategoryCreateRequest;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
@@ -9,9 +10,19 @@ use Illuminate\Http\Request;
 class CategoryController extends BaseController
 {
 
+    private BlogCategoryRepository $blogCategoryRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->blogCategoryRepository = app(BlogCategoryRepository::class);
+    }
+
     public function index()
     {
-        $paginator = BlogCategory::paginate(5);
+//        $paginator = BlogCategory::paginate(5);
+        $paginator = $this->blogCategoryRepository->getAllWithPaginate(5);
 
         return view('blog.admin.categories.index', compact('paginator'));
     }
@@ -20,7 +31,8 @@ class CategoryController extends BaseController
     public function create()
     {
         $item = new BlogCategory();
-        $categoryList = BlogCategory::all();
+        $categoryList = $this->blogCategoryRepository->getForSelect();
+
 
         return view('blog.admin.categories.edit',
             compact('item','categoryList'));
@@ -47,10 +59,14 @@ class CategoryController extends BaseController
     }
 
 
-    public function edit($id)
+    public function edit($id, BlogCategoryRepository $categoryRepository)
     {
-        $item = BlogCategory::findOrFail($id);
-        $categoryList = BlogCategory::all();
+        $item = $categoryRepository->getEdit($id);
+
+        if (empty($item)) {
+            abort(404);
+        }
+        $categoryList = $categoryRepository->getForSelect();
 
         return view('blog.admin.categories.edit',
             compact('item','categoryList'));
@@ -61,7 +77,7 @@ class CategoryController extends BaseController
 
     public function update(Request $request, int $id)
     {
-        $item = BlogCategory::find($id);
+        $item = $this->blogCategoryRepository->getEdit($id);
 
         if (empty($item)) {
             return back()->withErrors(['msg' => "Запись id=[{$id}] не найдена"])
