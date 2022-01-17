@@ -48,7 +48,6 @@ class CategoryController extends BaseController
 
         $item = (new BlogCategory())->create($data);
 
-
         if ($item) {
             return redirect()->route('blog.admin.categories.edit', [$item->id])
                 ->with(['success' => 'Сохранено успешно']);
@@ -61,12 +60,12 @@ class CategoryController extends BaseController
 
     public function edit($id, BlogCategoryRepository $categoryRepository)
     {
-        $item = $categoryRepository->getEdit($id);
+        $item = $this->blogCategoryRepository->getEdit($id);
 
         if (empty($item)) {
             abort(404);
         }
-        $categoryList = $categoryRepository->getForSelect();
+        $categoryList = $this->blogCategoryRepository->getForSelect();
 
         return view('blog.admin.categories.edit',
             compact('item','categoryList'));
@@ -79,7 +78,7 @@ class CategoryController extends BaseController
     {
         $item = $this->blogCategoryRepository->getEdit($id);
 
-        if (empty($item)) {
+        if ($item === null) {
             return back()->withErrors(['msg' => "Запись id=[{$id}] не найдена"])
                 ->withInput();
         }
