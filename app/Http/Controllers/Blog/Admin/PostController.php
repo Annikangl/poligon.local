@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class PostController extends BaseController
 {
-    private $blogPostRepository;
+    private BlogPostRepository $blogPostRepository;
 
     public function __construct()
     {
