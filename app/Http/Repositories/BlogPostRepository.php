@@ -39,4 +39,9 @@ class BlogPostRepository extends CoreRepository
 
         return $result;
     }
+
+    public function getEdit(int $id)
+    {
+        return $this->startCondition()->find($id);
+    }
 }
