@@ -37,7 +37,7 @@ $groupData = [
 
 Route::group($groupData, function() {
     // BlogCategory
-    $methods = ['index','store','create','edit','update'];
+    $methods = ['index','store','create','edit','update','destroy'];
     Route::resource('categories', CategoryController::class)
         ->only($methods);
 

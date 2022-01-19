@@ -11,6 +11,8 @@ class BlogPost extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = ['title','slug','category_id','excerpt','is_published','published_at','user_id'];
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(BlogCategory::class);
