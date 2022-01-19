@@ -75,20 +75,22 @@ class PostController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $item = $this->blogPostRepository->getEdit($id);
         if (empty($item)) {
-            abort(404);
+            return back()
+                ->withErrors(['msg' => 'Ошибка. Такая запись не найдена'])
+                ->withInput();
         }
 
         $request_data = $request->all();
-        if (empty($request_data['slug'])) {
-            $request_data['slug'] = Str::slug($request_data['title']);
-        }
-        if (empty($item->published_at) && $request_data['is_published']) {
-            $request_data['published_at'] = Carbon::now();
-        }
+//        if (empty($request_data['slug'])) {
+//            $request_data['slug'] = Str::slug($request_data['title']);
+//        }
+//        if (empty($item->published_at) && $request_data['is_published']) {
+//            $request_data['published_at'] = Carbon::now();
+//        }
 
         $result = $item->update($request_data);
 
