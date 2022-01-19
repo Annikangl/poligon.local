@@ -41,12 +41,13 @@ class CategoryController extends BaseController
 
     public function store(BlogCategoryCreateRequest $request)
     {
-        $data = $request->input();
-        if (empty($data['slug'])) {
-            $data['slug'] = \Str::slug($data['title']);
-        }
+        $request_data = $request->input();
 
-        $item = (new BlogCategory())->create($data);
+//        if (empty($request_data['slug'])) {
+//            $request_data['slug'] = \Str::slug($request_data['title']);
+//        }
+
+        $item = (new BlogCategory())->create($request_data);
 
         if ($item) {
             return redirect()->route('blog.admin.categories.edit', [$item->id])
