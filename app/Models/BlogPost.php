@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class BlogPost extends Model
 {
@@ -14,7 +15,8 @@ class BlogPost extends Model
 
     public const UNKNOWN_USER = 1;
 
-    protected $fillable = ['title',
+    protected $fillable = [
+        'title',
         'slug',
         'category_id',
         'excerpt',

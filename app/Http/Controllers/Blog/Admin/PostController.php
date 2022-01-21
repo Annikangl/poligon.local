@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\BlogCategoryRepository;
 use App\Http\Repositories\BlogPostRepository;
 use App\Http\Requests\BlogPostCreateRequest;
+use App\Models\BlogCategory;
 use App\Models\BlogPost;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -38,7 +39,9 @@ class PostController extends BaseController
      */
     public function create()
     {
-        $item = new BlogPost();
+        // Создание пустого объекта вместо new)
+        $item = BlogPost::make();
+
         $categoryList = $this->blogCategoryRepository->getForSelect();
 
         return view('blog.admin.posts.edit',
@@ -54,7 +57,7 @@ class PostController extends BaseController
     public function store(BlogPostCreateRequest $request)
     {
         $request_data = $request->input();
-        $item = (new BlogPost())->create($request_data);
+        $item = BlogPost::create($request_data);
 
         if ($item) {
             return redirect()

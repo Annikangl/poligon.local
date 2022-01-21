@@ -30,7 +30,7 @@ class CategoryController extends BaseController
 
     public function create()
     {
-        $item = new BlogCategory();
+        $item = BlogCategory::make();
         $categoryList = $this->blogCategoryRepository->getForSelect();
 
 
@@ -47,7 +47,7 @@ class CategoryController extends BaseController
 //            $request_data['slug'] = \Str::slug($request_data['title']);
 //        }
 
-        $item = (new BlogCategory())->create($request_data);
+        $item = BlogCategory::create($request_data);
 
         if ($item) {
             return redirect()->route('blog.admin.categories.edit', [$item->id])
