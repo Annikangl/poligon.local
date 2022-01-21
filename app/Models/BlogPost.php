@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,16 @@ class BlogPost extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title','slug','category_id','excerpt','is_published','published_at','user_id'];
+    public const UNKNOWN_USER = 1;
+
+    protected $fillable = ['title',
+        'slug',
+        'category_id',
+        'excerpt',
+        'is_published',
+        'published_at',
+        'user_id',
+        'content_raw'];
 
     public function category(): BelongsTo
     {
@@ -22,4 +32,5 @@ class BlogPost extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 }

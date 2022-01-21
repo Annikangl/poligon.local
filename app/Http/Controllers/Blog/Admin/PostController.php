@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Blog\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\BlogCategoryRepository;
 use App\Http\Repositories\BlogPostRepository;
+use App\Http\Requests\BlogPostCreateRequest;
+use App\Models\BlogPost;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -33,29 +35,38 @@ class PostController extends BaseController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        dd(__METHOD__);
+        $item = new BlogPost();
+        $categoryList = $this->blogCategoryRepository->getForSelect();
+
+        return view('blog.admin.posts.edit',
+            compact('item','categoryList'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param BlogPostCreateRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(BlogPostCreateRequest $request)
     {
-        dd(__METHOD__, $request->all());
+        $request_data = $request->input();
+        $item = (new BlogPost())->create($request_data);
+
+        if ($item) {
+            return redirect()
+                ->route('blog.admin.posts.edit', [$item->id])
+                ->with(['success' => 'Успешно сохранено', 'msg' => 'Новая статья была успешно добавлено. Пожалуйста, убедитесь что она была опубликована']);
+        }
+
+        return back()
+            ->withErrors(['msg' => 'Ошибка сохранения'])
+            ->withInput();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     */
     public function edit(int $id)
     {
         $item = $this->blogPostRepository->getEdit($id);
@@ -110,10 +121,19 @@ class PostController extends BaseController
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): \Illuminate\Http\RedirectResponse
     {
-        dd(__METHOD__, $id);
+        $result = BlogPost::destroy($id);
+
+        if ($result) {
+            return redirect()
+                ->route('blog.admin.posts.index')
+                ->with(['success' => 'Запись успешно удалена']);
+        }
+
+        return back()
+            ->withErrors(['msg' => 'Ошибка удаления']);
     }
 }

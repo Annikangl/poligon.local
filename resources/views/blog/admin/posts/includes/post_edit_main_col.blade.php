@@ -48,9 +48,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="description">Описание</label>
-                            <textarea name="description"
-                                      id="description"
+                            <label for="content_raw">Описание</label>
+                            <textarea name="content_raw"
+                                      id="content_raw"
                                       class="form-control"
                                       cols="30"
                                       rows="10"> {{ old('content_html', $item->content_html) }}
